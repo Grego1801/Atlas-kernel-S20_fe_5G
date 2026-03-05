@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+
     - name: Checkout source
       uses: actions/checkout@v4
 
@@ -18,13 +19,16 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y \
-        git bc bison build-essential curl flex gcc-aarch64-linux-gnu \
-        gcc-arm-linux-gnueabi libssl-dev libncurses5-dev lzop \
-        python3 unzip zip clang llvm
+        bc bison build-essential ccache curl flex git \
+        gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi \
+        libssl-dev libncurses5-dev libncurses-dev \
+        lzop python3 unzip zip wget
 
-    - name: Setup clang
+    - name: Download Android Clang
       run: |
-        git clone https://github.com/llvm/llvm-project.git --depth=1 clang
+        wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r487747c.tar.gz
+        mkdir clang
+        tar -xf clang-r487747c.tar.gz -C clang
 
     - name: Build kernel
       run: |
@@ -38,7 +42,8 @@ jobs:
         O=out \
         ARCH=arm64 \
         CC=clang \
-        CROSS_COMPILE=aarch64-linux-gnu-
+        CROSS_COMPILE=aarch64-linux-gnu- \
+        CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
     - name: Upload kernel
       uses: actions/upload-artifact@v4
