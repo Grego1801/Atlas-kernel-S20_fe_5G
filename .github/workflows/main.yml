@@ -23,12 +23,9 @@ jobs:
         libssl-dev libncurses5-dev libncurses-dev \
         lzop python3 unzip zip wget
 
-    - name: Download Android Clang (Proton-Clang mirror)
+    - name: Download Android Clang (proton-clang master branch)
       run: |
-        git clone --depth=1 -b main https://github.com/kdrag0n/proton-clang.git clang
-        # Or use a specific release if needed:
-        # wget -O clang.tar.xz https://github.com/kdrag0n/proton-clang/releases/download/r487747c/clang-r487747c.tar.xz
-        # tar -xf clang.tar.xz -C clang --strip-components=1
+        git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
 
     - name: Build kernel
       run: |
@@ -51,9 +48,3 @@ jobs:
       with:
         name: kernel-image
         path: out/arch/arm64/boot/Image
-
-    - name: Upload AnyKernel3 package (optional)
-      uses: actions/upload-artifact@v4
-      with:
-        name: AnyKernel3-flashable
-        path: AnyKernel3/
