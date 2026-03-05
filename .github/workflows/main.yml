@@ -23,12 +23,12 @@ jobs:
         gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi \
         libssl-dev libncurses5-dev libncurses-dev \
         lzop python3 unzip zip wget
-
     - name: Download Android Clang
       run: |
-        wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r487747c.tar.gz
+        wget -O clang.tar.gz "https://gitlab.com/LineageOS/os/prebuilts/clang/host/linux-x86/-/archive/main/clang-main.tar.gz"
         mkdir clang
-        tar -xf clang-r487747c.tar.gz -C clang
+        tar -xf clang.tar.gz -C clang --strip-components=1
+
 
     - name: Build kernel
       run: |
